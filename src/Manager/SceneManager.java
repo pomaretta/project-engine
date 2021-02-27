@@ -97,6 +97,9 @@ public class SceneManager {
 
     public static void changeScene(SceneManager manager, GameScene scene){
         assert scene != null;
+        if(manager.currentScene != null){
+            manager.currentScene.stop();
+        }
         manager.setCurrentScene(scene);
         manager.loadScene();
     }

@@ -20,6 +20,6 @@ import javafx.scene.canvas.GraphicsContext;
  */
 
 public interface Entity {
-    public void getInfo();
+    public Vector2D getVector2D();
     public void render(GraphicsContext g);
 }
