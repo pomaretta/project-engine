@@ -21,5 +21,5 @@ import java.util.ArrayList;
  */
 
 public interface ColliderListener {
-    public void checkCollisions(ArrayList<GameEntity> entities);
+    public void checkCollisions();
 }

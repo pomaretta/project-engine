@@ -18,10 +18,18 @@ package Objects;
  */
 
 public interface Vector {
-    public double getX();
-    public double getY();
+    public double getMinX();
+    public double getMinY();
+    public double getMaxX();
+    public double getMaxY();
+    public double getPosX();
+    public double getPosY();
     public int getZ();
-    public void setX(double v);
-    public void setY(double v);
+    public void setMinX(double v);
+    public void setMinY(double v);
+    public void setMaxX(double v);
+    public void setMaxY(double v);
+    public void setPosX(double v);
+    public void setPosY(double v);
     public void setZ(int v);
 }

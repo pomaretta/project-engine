@@ -19,17 +19,39 @@ package Objects;
 
 public class Vector2D implements Vector {
 
-    private double x,y;
+    private double minX, minY;
+    private double maxX,maxY;
+    private double posX, posY;
     private int z = 0;
 
     @Override
-    public double getX() {
-        return x;
+    public double getMinX() {
+        return minX;
     }
 
     @Override
-    public double getY() {
-        return y;
+    public double getMinY() {
+        return minY;
+    }
+
+    @Override
+    public double getMaxX() {
+        return maxX;
+    }
+
+    @Override
+    public double getMaxY() {
+        return maxY;
+    }
+
+    @Override
+    public double getPosX() {
+        return posX;
+    }
+
+    @Override
+    public double getPosY() {
+        return posY;
     }
 
     @Override
@@ -37,14 +59,39 @@ public class Vector2D implements Vector {
         return z;
     }
 
-    @Override
-    public void setX(double v) {
-        x = v;
+    public void setSize(double v, double v1){
+        setMaxX(v);
+        setMaxY(v1);
     }
 
     @Override
-    public void setY(double v) {
-        y = v;
+    public void setMinX(double v) {
+        minX = getPosX();
+    }
+
+    @Override
+    public void setMinY(double v) {
+        minY = getPosY();
+    }
+
+    @Override
+    public void setMaxX(double maxX) {
+        this.maxX = maxX;
+    }
+
+    @Override
+    public void setMaxY(double maxY) {
+        this.maxY = maxY;
+    }
+
+    @Override
+    public void setPosX(double posX) {
+        this.posX = posX;
+    }
+
+    @Override
+    public void setPosY(double posY) {
+        this.posY = posY;
     }
 
     @Override

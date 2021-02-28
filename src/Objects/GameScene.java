@@ -65,7 +65,7 @@ public abstract class GameScene implements Scene {
         this.entities.add(entity);
         entity.bindScene(this);
     }
-    protected ArrayList getEntities(){
+    public ArrayList<GameEntity> getEntities(){
         return this.entities;
     }
 
