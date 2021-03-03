@@ -15,13 +15,10 @@ package Objects;
 
 import Physics.Collider;
 import Physics.Collider2D;
-import Singleton.Game;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 
 /**
  * @author Carlos Pomares
@@ -46,9 +43,6 @@ public abstract class GameEntity implements Entity, Collider2D {
         scripts = new ArrayList<>();
         vector2D = new Vector2D();
         collider = new Collider();
-        for(GameScript script : scripts){
-            script.start();
-        }
     }
 
     public void bindScene(GameScene gameScene){
@@ -56,6 +50,13 @@ public abstract class GameEntity implements Entity, Collider2D {
     }
 
     protected abstract void start();
+
+    public void init(){
+        start();
+        for(GameScript script : scripts){
+            script.start();
+        }
+    }
 
     public void addScript(GameScript script){
         scripts.add(script);

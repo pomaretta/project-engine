@@ -1,6 +1,4 @@
-package Singleton;
-
-/*
+package Singleton;/*
 
     Project     project-engine
     Package     Singleton    
@@ -16,7 +14,6 @@ package Singleton;
 import Manager.ApplicationManager;
 import Manager.SceneManager;
 import Utilities.GameInfo;
-import javafx.stage.Stage;
 
 /**
  * @author Carlos Pomares

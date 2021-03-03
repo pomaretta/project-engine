@@ -27,4 +27,19 @@ public abstract class GameScript implements MonoBehaviour, KeyEvent {
         this.entity = entity;
     }
 
+    @Override
+    public void onKeyPressed(javafx.scene.input.KeyEvent event) {
+
+    }
+
+    @Override
+    public void onKeyReleased(javafx.scene.input.KeyEvent event) {
+
+    }
+
+    @Override
+    public void onKeyTyped(javafx.scene.input.KeyEvent event) {
+
+    }
+
 }

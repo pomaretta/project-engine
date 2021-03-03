@@ -15,9 +15,7 @@ package Physics;
 
 import Objects.GameEntity;
 import Objects.GameScene;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import Objects.Vector2D;
 
 /**
  * @author Carlos Pomares
@@ -25,11 +23,17 @@ import java.util.Collections;
 
 public class Collider {
 
+    private static Enum tags;
+
     private double minX,minY,maxX,maxY;
     private double posX, posY;
     private boolean collision;
+    private Enum tag;
 
-    private boolean trigger;
+    private Enum from;
+    private Enum to;
+
+    private boolean trigger = false;
     private boolean upperLimit, lowerLimit, leftLimit, rightLimit;
 
     public Collider(){}
@@ -39,6 +43,13 @@ public class Collider {
         this.minY = minY;
         this.maxX = maxX;
         this.maxY = maxY;
+    }
+
+    public Collider(Vector2D vector2D){
+        this.minX = vector2D.getMinX();
+        this.minY = vector2D.getMinY();
+        this.maxX = vector2D.getMaxX();
+        this.maxY = vector2D.getMaxY();
     }
 
     public double getMinX() {
@@ -105,6 +116,22 @@ public class Collider {
         this.posY = v1;
     }
 
+    public void setTag(Enum t){
+        this.tag = t;
+    }
+
+    public Enum getTag(){
+        return this.tag;
+    }
+
+    public Enum getCollisionTo(){
+        return this.to;
+    }
+
+    public Enum getCollisionFrom(){
+        return this.from;
+    }
+
     public void updatePosition(double v, double v1){
         this.posX = v;
         this.posY = v1;
@@ -127,11 +154,6 @@ public class Collider {
     }
 
     public boolean intersects(Collider collider){
-
-        // UPPER LIMIT
-        /*if(this.posX < (collider.posX + collider.maxX))
-            upperLimit = true;*/
-
         return (
             this.posX <= (collider.posX + collider.maxX)
                 &&
@@ -151,58 +173,83 @@ public class Collider {
 
     public boolean intersectsLower(Collider collider){
         return (
-            this.posY <= (collider.posY)
+            this.posY <= (collider.posY + collider.maxY)
         );
     }
 
-    public static void collision(GameEntity v, GameEntity v1){
+    public boolean intersectsLeft(Collider collider){
+        return (
+            this.posX >= (collider.posX + collider.maxX)
+        );
+    }
+
+    public boolean intersectsRight(Collider collider){
+        return (
+            (this.posX + this.maxX) <= collider.posX
+        );
+    }
+
+    public static boolean handleCollision(GameEntity v, GameEntity v1){
         if(v.getCollider().intersects(v1.getCollider())){
             v.getCollider().collision = true;
-            /*if(v.getCollider().intersectsUpper(v1.getCollider()))
+
+            v.getCollider().from = v1.getCollider().getTag();
+            v1.getCollider().to = v.getCollider().getTag();
+
+            if(v.getCollider().intersectsUpper(v1.getCollider())){
                 v.getCollider().upperLimit = true;
-            if(v.getCollider().intersectsLower(v1.getCollider()))
-                v.getCollider().lowerLimit = true;*/
+            } else {
+                v.getCollider().upperLimit = false;
+            }
+
+            if(v.getCollider().intersectsLower(v1.getCollider())) {
+                v.getCollider().lowerLimit = true;
+            } else {
+                v.getCollider().lowerLimit = false;
+            }
+
+            if(v.getCollider().intersectsLeft(v1.getCollider())){
+                v.getCollider().leftLimit = true;
+            } else {
+                v.getCollider().leftLimit = false;
+            }
+
+            if(v.getCollider().intersectsRight(v1.getCollider())){
+                v.getCollider().rightLimit = true;
+            } else {
+                v.getCollider().rightLimit = false;
+            }
+
+            return true;
         } else {
             v.getCollider().collision = false;
-            /*v.getCollider().upperLimit = false;
-            v.getCollider().lowerLimit = false;*/
+            v.getCollider().upperLimit = false;
+            v.getCollider().lowerLimit = false;
+            v.getCollider().leftLimit = false;
+            v.getCollider().rightLimit = false;
+            v.getCollider().from = null;
+            v.getCollider().to = null;
+            return false;
         }
     }
 
     public static void checkCollisions(GameScene gameScene){
         for(GameEntity gameEntity : gameScene.getEntities()){
-            for (GameEntity gameEntity1 : gameScene.getEntities()){
-                if(!gameEntity.equals(gameEntity1))
-                    Collider.collision(gameEntity,gameEntity1);
+            for(GameEntity gameEntity1 : gameScene.getEntities()){
+                if(!gameEntity.equals(gameEntity1) && gameEntity.isColliderActive() && gameEntity1.isColliderActive()){
+                    if(handleCollision(gameEntity,gameEntity1))
+                        break;
+                }
             }
-
-            /*System.out.println("--- COLLISION BLOCK ---");
-
-            System.out.println(
-                    String.format(
-                            "ENTITY 1: %s -- X: %s -- Y: %s -- W: %s -- H: %s"
-                            ,gameEntity
-                            ,gameEntity.getCollider().getPosX()
-                            ,gameEntity.getCollider().getPosY()
-                            ,gameEntity.getCollider().getMaxX()
-                            ,gameEntity.getCollider().getMaxY()
-                    )
-            );
-
-            System.out.println(
-                    String.format(
-                            "ENTITY 2: %s -- X: %s -- Y: %s -- W: %s -- H: %s"
-                            ,gameEntity1
-                            ,gameEntity1.getCollider().getPosX()
-                            ,gameEntity1.getCollider().getPosY()
-                            ,gameEntity1.getCollider().getMaxX()
-                            ,gameEntity1.getCollider().getMaxY()
-                    )
-            );
-
-            System.out.println("--- END BLOCK ---");*/
-
         }
+    }
+
+    public static void setTags(Enum e){
+        tags = e;
+    }
+
+    public static Enum getTags(){
+        return tags;
     }
 
     @Override
@@ -222,4 +269,5 @@ public class Collider {
                 ", rightLimit=" + rightLimit +
                 '}';
     }
+
 }

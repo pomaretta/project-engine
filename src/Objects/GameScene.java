@@ -13,16 +13,10 @@ package Objects;
     
 */
 
-import Singleton.Game;
 import javafx.animation.AnimationTimer;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 
-import java.awt.event.KeyEvent;
 import java.util.*;
 
 /**
@@ -36,6 +30,7 @@ public abstract class GameScene implements Scene {
     private GraphicsContext graphicsContext;
     private ArrayList<GameEntity> entities;
     protected AnimationTimer gameTimer;
+    private long gameTime;
 
     // POSITIONING
     private double minX,minY,maxX,maxY;
@@ -51,7 +46,7 @@ public abstract class GameScene implements Scene {
     }
 
     // ENTITIES
-    protected GameEntity takeEntity(GameEntity entity){
+    public GameEntity takeEntity(GameEntity entity){
         for (Iterator<GameEntity> iter = this.entities.iterator(); iter.hasNext(); ) {
             GameEntity gameEntity = iter.next();
             if(gameEntity == entity){
@@ -61,7 +56,7 @@ public abstract class GameScene implements Scene {
         }
         return null;
     }
-    protected void addEntity(GameEntity entity){
+    public void addEntity(GameEntity entity){
         this.entities.add(entity);
         entity.bindScene(this);
     }
@@ -107,7 +102,7 @@ public abstract class GameScene implements Scene {
     public void run() {
         init();
         for(GameEntity entity : entities){
-            entity.start();
+            entity.init();
         }
         entities.sort((left, right) -> left.getVector2D().getZ() - right.getVector2D().getZ());
         update();
@@ -125,9 +120,9 @@ public abstract class GameScene implements Scene {
         this.gameTimer = new AnimationTimer() {
             @Override
             public void handle(long l) {
-                long time = (l - startTime) / 1000000000;
-                update(time);
-                render(getGraphicsContext(),time);
+                gameTime = (l - startTime) / 1000000000;
+                update(gameTime);
+                render(getGraphicsContext(),gameTime);
             }
         };
         gameTimer.start();
@@ -137,6 +132,10 @@ public abstract class GameScene implements Scene {
 
     public void stop(){
         gameTimer.stop();
+    }
+
+    public long getGameTime(){
+        return this.gameTime;
     }
 
 }

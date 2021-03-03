@@ -13,8 +13,6 @@ package Utilities;
     
 */
 
-import Singleton.Game;
-
 /**
  * @author Carlos Pomares
  */
@@ -41,7 +39,7 @@ public class GameInfo {
         this.version = version;
     }
 
-    private GameInfo(String title, String version, String author){
+    public GameInfo(String title, String version, String author){
         this.title = title;
         this.version = version;
         this.author = author;
